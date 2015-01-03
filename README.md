@@ -63,7 +63,7 @@ Feature to be added:
 -------------------
 - ipv6 ping support.
 - ping analysis based on the packet size.
-- beautify the table alignment with the table header ( I have plan to move the (table.go) [https://github.com/subh007/go_ping_sweep/blob/master/table.go] as standalone project).
+- beautify the table alignment with the table header (I have plan to move the [table.go] (https://github.com/subh007/go_ping_sweep/blob/master/table.go) as standalone project).
 - bugfixes
 
 Please feel free to send comment/ feedback / suggestion. 

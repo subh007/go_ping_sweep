@@ -4,7 +4,7 @@ I tried to port the [ping_sweep] (https://github.com/Who8MyLunch/Ping_Sweep) pro
 
 Example
 =======
-(example.go) [https://github.com/subh007/go_ping_sweep/blob/master/example/example.go]
+[example.go] (https://github.com/subh007/go_ping_sweep/blob/master/example/example.go)
 ```go
 package main
 

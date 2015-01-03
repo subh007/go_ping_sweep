@@ -1,6 +1,6 @@
 This project analyse the RTT time for a ipv4 host or ipv6 host using the ICMP echo request/ reply message.
 
-I tried to port the [ping_sweep] (https://github.com/Who8MyLunch/Ping_Sweep) project which is written in the Python language.
+It is try to port the [ping_sweep] (https://github.com/Who8MyLunch/Ping_Sweep) project in go language which is written in the Python language.
 
 Example
 =======

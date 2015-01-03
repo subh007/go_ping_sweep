@@ -61,6 +61,7 @@ status : PING PASS/FAIL.
 
 Feature to be added:
 -------------------
+- Non-blocking echo request-response (using go-routines and workgroup).
 - ipv6 ping support.
 - ping analysis based on the packet size.
 - beautify the table alignment with the table header (I have plan to move the [table.go] (https://github.com/subh007/go_ping_sweep/blob/master/table.go) as standalone project).

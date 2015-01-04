@@ -4,7 +4,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/subh007/goodl/go_ping_sweep"
+	"github.com/subh007/go_ping_sweep"
 	"os"
 )
 

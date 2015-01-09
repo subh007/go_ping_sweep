@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -90,10 +91,10 @@ func parseICMPMessage(b []byte) (*icmpMessage, error) {
 
 // structure to hold the ping result.
 type Result struct {
-	TimePing   string // rtt time
-	DataSize   int    // data size in icmp packet
-	PacketSize int    // packet size of icmp
-	Status     bool   // status for ping pass/fail
+	TimePing   int64 // rtt time in ns
+	DataSize   int   // data size in icmp packet
+	PacketSize int   // packet size of icmp
+	Status     bool  // status for ping pass/fail
 }
 
 // function sends the single icmp packet and respnse back with the
@@ -134,7 +135,7 @@ func singlePing(host string, conn net.Conn) (*Result, error) {
 
 	rcvd_time := time.Now()
 
-	diff := rcvd_time.Sub(send_time)
+	diff := rcvd_time.Sub(send_time).Nanoseconds()
 	_, err = parseICMPMessage(rb)
 	if err != nil {
 		fmt.Println("err: " + err.Error())
@@ -142,7 +143,7 @@ func singlePing(host string, conn net.Conn) (*Result, error) {
 	}
 
 	var r Result
-	r.TimePing = diff.String()
+	r.TimePing = diff
 	r.DataSize = 0
 	r.PacketSize = 0
 	r.Status = true
@@ -169,7 +170,7 @@ func setupConnection(conn_type, host string) (net.Conn, error) {
 func PingAnalyse(host string, pkt_count int) (*Table, error) {
 
 	t := new(Table)
-	t.SetHeader("TimePing", "DataSize", "PacketSize", "status")
+	t.SetHeader("TimePing (ns)", "DataSize", "PacketSize", "status")
 
 	conn, err := setupConnection("ip4:icmp", host)
 	if err != nil {
@@ -184,7 +185,7 @@ func PingAnalyse(host string, pkt_count int) (*Table, error) {
 			t.AddData("0", "0", "0", "-1")
 		} else {
 			t.AddData(
-				res.TimePing,
+				strconv.FormatInt(res.TimePing, 10),
 				"-",
 				"-",
 				"1",

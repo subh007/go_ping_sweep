@@ -59,7 +59,7 @@ PacketSize : packet size of including ICMP header.
 
 status : PING PASS/FAIL.
 
-Feature to be added:
+Features to be added:
 -------------------
 - Non-blocking echo request-response (using go-routines and workgroup).
 - ipv6 ping support.

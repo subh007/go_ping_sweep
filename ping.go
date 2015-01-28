@@ -170,7 +170,7 @@ func setupConnection(conn_type, host string) (net.Conn, error) {
 func PingAnalyse(host string, pkt_count int) (*Table, error) {
 
 	t := new(Table)
-	t.SetHeader("TimePing (ns)", "DataSize", "PacketSize", "status")
+	t.SetHeader("TimePing (ns)", "DataSize", "PacketSize", "status", "mean")
 
 	conn, err := setupConnection("ip4:icmp", host)
 	if err != nil {
@@ -178,8 +178,11 @@ func PingAnalyse(host string, pkt_count int) (*Table, error) {
 	}
 	defer conn.Close()
 
+	results := make([]Result, pkt_count)
+
 	for i := 0; i < pkt_count; i++ {
 		res, err := singlePing(host, conn)
+		results[i] = *res
 
 		if err != nil {
 			t.AddData("0", "0", "0", "-1")
@@ -193,5 +196,6 @@ func PingAnalyse(host string, pkt_count int) (*Table, error) {
 		}
 	}
 
+	fmt.Println(average(results))
 	return t, nil
 }

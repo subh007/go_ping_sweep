@@ -133,6 +133,12 @@ func singlePing(host string, conn net.Conn) (*Result, error) {
 		return nil, err
 	}
 
+	// TODO: first check that packet is received with correct
+	// (xid, xseq). If not then it is not the correct response
+	// and wait for the some timeout period. It is important
+	// because it might possible we are receiving ICMP response
+	// for other process. We have to confirm that would it be possible
+	// to sniff all the ICMP packets here.
 	rcvd_time := time.Now()
 
 	diff := rcvd_time.Sub(send_time).Nanoseconds()

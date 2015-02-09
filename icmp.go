@@ -60,8 +60,8 @@ func (p *icmpMessageBody) Len() int {
 
 func parseICMPMessageBody(b []byte) (*icmpMessageBody, error) {
 	p := &icmpMessageBody{
-		ID:  int(b[0]<<8) | int(b[1]),
-		Seq: int(b[2]<<8) | int(b[3]),
+		ID:  (int(b[0]) << 8) | int(b[1]),
+		Seq: (int(b[2]) << 8) | int(b[3]),
 	}
 
 	p.Data = make([]byte, len(b)-4)

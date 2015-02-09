@@ -38,15 +38,16 @@ func singlePing(host string, conn net.Conn) (*Result, error) {
 
 	send_time := time.Now()
 	_, err = conn.Write(icmp_byte)
+
 	if err != nil {
 		fmt.Println("err: " + err.Error())
 		return nil, err
 	}
 
-	//SniffICMP()
-
 	// capture the ping response message
-	rb := make([]byte, 40+len(icmp_byte))
+	// NOTE: extra 20 bytes is asssigned becuaes the
+	// response packet will carry the IP header as well.
+	rb := make([]byte, 20+len(icmp_byte))
 
 	conn.SetReadDeadline(time.Now().Add(time.Second * 5))
 	if _, err = conn.Read(rb); err != nil {
@@ -54,21 +55,23 @@ func singlePing(host string, conn net.Conn) (*Result, error) {
 		return nil, err
 	}
 
-	// TODO: first check that packet is received with correct
+	// first check that packet is received with correct
 	// (xid, xseq). If not then it is not the correct response
 	// and wait for the some timeout period.
-
-	rcvd_time := time.Now()
-
-	diff := rcvd_time.Sub(send_time).Nanoseconds()
-	_, err = parseICMPMessage(rb)
+	icmp_rep, err := parseICMPMessage(rb[20:])
 	if err != nil {
-		fmt.Println("err: " + err.Error())
+		fmt.Println("error generated")
 		return nil, err
 	}
 
 	var r Result
-	r.TimePing = diff
+
+	if icmp_rep.Body.ID == xid && icmp_rep.Body.Seq == xseq {
+		rcvd_time := time.Now()
+		r.TimePing = rcvd_time.Sub(send_time).Nanoseconds()
+	} else {
+		fmt.Println("not matching")
+	}
 	r.DataSize = 0
 	r.PacketSize = 0
 	r.Status = true

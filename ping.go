@@ -124,6 +124,8 @@ func singlePing(host string, conn net.Conn) (*Result, error) {
 		return nil, err
 	}
 
+	//SniffICMP()
+
 	// capture the ping response message
 	rb := make([]byte, 40+len(icmp_byte))
 
@@ -135,10 +137,8 @@ func singlePing(host string, conn net.Conn) (*Result, error) {
 
 	// TODO: first check that packet is received with correct
 	// (xid, xseq). If not then it is not the correct response
-	// and wait for the some timeout period. It is important
-	// because it might possible we are receiving ICMP response
-	// for other process. We have to confirm that would it be possible
-	// to sniff all the ICMP packets here.
+	// and wait for the some timeout period.
+
 	rcvd_time := time.Now()
 
 	diff := rcvd_time.Sub(send_time).Nanoseconds()
@@ -164,7 +164,7 @@ func setupConnection(conn_type, host string) (net.Conn, error) {
 		return nil, err
 	}
 	host = addrs[0].String()
-	conn, err := net.Dial("ip4:icmp", host)
+	conn, err := net.Dial(conn_type, host)
 	if err != nil {
 		return nil, err
 	}
@@ -174,7 +174,6 @@ func setupConnection(conn_type, host string) (net.Conn, error) {
 
 // funtion analyze the ping time and return in table format.
 func PingAnalyse(host string, pkt_count int) (*Table, error) {
-
 	t := new(Table)
 	t.SetHeader("TimePing (ns)", "DataSize", "PacketSize", "status", "mean")
 
@@ -205,3 +204,21 @@ func PingAnalyse(host string, pkt_count int) (*Table, error) {
 	fmt.Println(average(results))
 	return t, nil
 }
+
+/*
+// testing the icmp sniffer
+func SniffICMP() {
+	conn, err := setupConnection("ip4:icmp", "google.com")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	rb := make([]byte, 100)
+
+	for {
+		if _, err = conn.Read(rb); err != nil {
+			fmt.Print(err.Error())
+		}
+		fmt.Println(string(rb))
+	}
+}
+*/

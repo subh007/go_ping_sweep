@@ -3,6 +3,7 @@ package go_ping_sweep
 import (
 	"errors"
 	"fmt"
+	"strings"
 )
 
 // struct to create the table
@@ -84,4 +85,35 @@ func (t *Table) PrintHeader() {
 	for i := 0; i < len(t.Header); i++ {
 		fmt.Println(t.Header[i])
 	}
+}
+
+// return the header indes if exist
+// ex if table is:
+// TimePing | DataSize | PacketSize | status |
+// then getColumnIndes("Status") will be 4 otherwise return -1.
+func (t *Table) getCoulumnIndex(header string) int {
+	if t != nil {
+		for i := 0; i < t.tail; i++ {
+			if strings.Compare(t.Header[i], header) == 0 {
+				return i
+			}
+		}
+	}
+	return -1
+}
+
+// function returns the the column.
+func (t *Table) GetColumn(columHeader string) []string {
+	headerIndex := t.getCoulumnIndex(columHeader)
+
+	columnData := make([]string, 10, 100)
+
+	if headerIndex != -1 {
+		// retrieve the all the element from the column.
+		for i:=0; i < t.tail; i++ {
+			columnData[i] = t.Data[i][headerIndex]
+			//fmt.Print(t.Data[i][headerIndex])
+		}
+	}
+	return columnData
 }

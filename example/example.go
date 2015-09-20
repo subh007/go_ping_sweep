@@ -5,7 +5,9 @@ import (
 	"flag"
 	"fmt"
 	"github.com/subh007/go_ping_sweep"
+	tm "github.com/buger/goterm"
 	"os"
+	"strconv"
 )
 
 func main() {
@@ -23,6 +25,29 @@ func main() {
 			fmt.Println(err.Error())
 			os.Exit(-1)
 		}
+
+		//	 create the graph with the output
+		fmt.Println("Ping Analysis (Graph)")
+
+		tm.Clear()
+		tm.MoveCursor(5, 0)
+
+		chart := tm.NewLineChart(100, 20)
+		data := new(tm.DataTable)
+		data.AddColumn("Ping")
+		data.AddColumn("Delay (ns)")
+
+
+		pingTime := t.GetColumn("TimePing (ns)")
+		for i := 0; i < len(pingTime); i++ {
+			pingTimeI, _ := strconv.Atoi(pingTime[i])
+			data.AddRow(float64(i), float64(pingTimeI))
+		}
+
+		tm.Println(chart.Draw(data))
+		tm.Flush()
+
+		fmt.Println("Ping Analysis (Table)")
 		t.CreateTable()
 	}
 }

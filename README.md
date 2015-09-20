@@ -4,7 +4,7 @@ It is try to port the [ping_sweep] (https://github.com/Who8MyLunch/Ping_Sweep) p
 
 Screen Shot
 ===========
-![ScreenShot](https://www.dropbox.com/s/cmrft6nuge38ibz/Screen%20Shot%202015-09-20%20at%207.40.27%20pm.png?dl=0)
+![ScreenShot](https://www.dropbox.com/s/cmrft6nuge38ibz/Screen%20Shot%202015-09-20%20at%207.40.27%20pm.png)
 
 Example
 =======

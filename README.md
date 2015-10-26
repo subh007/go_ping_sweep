@@ -5,7 +5,7 @@ It is try to port the [ping_sweep] (https://github.com/Who8MyLunch/Ping_Sweep) p
 Screen Shot
 ===========
 
-![ScreenShot](https://www.dropbox.com/s/7269ymoes7b2d0e/go_ping_sweep.png?dl=0)
+![ScreenShot](https://www.dropbox.com/s/7269ymoes7b2d0e/go_ping_sweep.png?dl=1)
 
 Example
 =======
